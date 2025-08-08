@@ -5,9 +5,7 @@ import { MoveRight } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "../lib/axios";
 
-const stripePromise = loadStripe(
-  "pk_test_51PNXRnBp4fz1Nk7lvG3wXuNXXlxqMvd8lHsCA6rViFi3RY30gxscRGd4ugbwFTX5FimWKxhkCfpgrWgeG8mKe4UP00iVg3X5vG"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const OrderSummary = () => {
   const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
@@ -19,6 +17,10 @@ const OrderSummary = () => {
 
   const handlePayment = async () => {
     const stripe = await stripePromise;
+    if (!stripe) {
+      console.error("Stripe publishable key is missing");
+      return;
+    }
     const res = await axios.post("/payments/create-checkout-session", {
       products: cart,
       couponCode: coupon ? coupon.code : null,

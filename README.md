@@ -46,6 +46,14 @@ CLIENT_URL=http://localhost:5173
 NODE_ENV=development
 ```
 
+### Setup frontend .env file
+
+Create `frontend/.env` and add:
+
+```bash
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+```
+
 ### Run this app locally
 
 ```shell
@@ -57,3 +65,7 @@ npm run build
 ```shell
 npm run start
 ```
+
+Notes:
+- Frontend axios is configured to use `/api`. In development, Vite proxies `/api` to the backend at `http://localhost:5000` per `frontend/vite.config.js`.
+- Ensure cookies are allowed: axios sends credentials by default, and the server sets httpOnly cookies.
